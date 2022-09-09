@@ -1,0 +1,113 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdk rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    defaultConfig {
+        applicationId rootProject.ext.android.appPackageName
+
+        minSdk rootProject.ext.android.minSdkVersion
+        targetSdk rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+        multiDexEnabled true
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.getName())
+            }
+        }
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86_64'
+        }
+    }
+    signingConfigs {
+        release {
+            v1SigningEnabled true  //打包时默认勾选 V1（Jar Signature）
+            v2SigningEnabled true  //打包时默认勾选 V2（Full APK Signature）
+        }
+    }
+    buildTypes {
+        release {
+            debuggable false        // 是否支持断点调试
+            jniDebuggable false     // 是否可以调试NDK代码
+            shrinkResources true    // 是否去除无用的资源
+            zipAlignEnabled true    // 是否对APK包执行ZIP对齐优化，减小zip体积，增加运行效率
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            debuggable true        // 是否支持断点调试
+            jniDebuggable true     // 是否可以调试NDK代码
+            shrinkResources false    // 是否去除无用的资源
+            zipAlignEnabled false    // 是否对APK包执行ZIP对齐优化，减小zip体积，增加运行效率
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+
+
+
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def fileName
+            def date = new Date()
+            def formattedDate = date.format('yyyyMMddHHmm')
+            if (variant.buildType.name == 'release') {
+                fileName = "xFrame_v${defaultConfig.versionName}_${formattedDate}_release.apk"
+            } else if (variant.buildType.name == 'debug') {
+                fileName = "xFrame_v${defaultConfig.versionName}_${formattedDate}_debug.apk"
+            }
+            outputFileName = fileName
+            /*outputFileName = getApkName()*/
+        }
+    }
+    lintOptions {
+        /*在 release 版本是否检查 fatal 类型错误，默认release版本为开启。开启后，检查到 fatal 类型错误则会关闭。*/
+        checkReleaseBuilds false
+        /*是否发现错误，则停止构建*/
+        abortOnError false
+        /*是否忽略警告，只检查error。*/
+        ignoreWarnings false
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+    }
+    kapt {
+        generateStubs = true
+    }
+
+    resourcePrefix "x_"
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    //implementation project(path: ':architecture')
+    implementation 'com.github.loading-II:architecture:v0.0.4'
+}
+
