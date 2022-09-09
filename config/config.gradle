@@ -7,39 +7,41 @@ ext {
             targetSdkVersion : 32,
             versionCode      : 1,
             versionName      : "1.0",
-            appPackageName   : "com.wan.xhttp",
+            appPackageName   : "com.net.xhttp",
     ]
 
     version = [
-            /*base implementation version*/
             core_ktx                  : "1.7.0",
-            appcompat_verison         : "1.4.2",
-            material_vresion          : "1.6.1",
-            constraintlayout_version  : "2.1.4",
-            multidex_version          : "2.0.1",
-            lifecycle_version         : "2.4.1",
+            coroutines_version        : "1.6.1",
+
     ]
 
-    /*最基础的一些依赖包*/
-    dependencies_base = [
-            core_ktx          : "androidx.core:core-ktx:$version.core_ktx",
-            appcompat         : "androidx.appcompat:appcompat:$version.appcompat_verison",
-            /*material          : "com.google.android.material:material:$version.material_vresion",
-            constraintlayout  : "androidx.constraintlayout:constraintlayout:$version.constraintlayout_version",*/
-            multidex          : "androidx.multidex:multidex:$version.multidex_version",
+    dependencies_coroutines = [
+            kotlinx_coroutines_core   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version.coroutines_version",
+            kotlinx_coroutines_android: "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version.coroutines_version",
     ]
 
-    /*lifecycle 更多资料，请参考：https://developer.android.google.cn/jetpack/androidx/releases/lifecycle?hl=zh_cn#kts*/
-    dependencies_kapt_lifecycle = [
-            "lifecycle_compiler": "androidx.lifecycle:lifecycle-compiler:${rootProject.ext.version.lifecycle_version}",
+    /*http网络相关部分，涉及到的开源库较多*/
+    dependencies_http = [
+            "gson"               : "com.google.code.gson:gson:2.9.0",
+            "retrofit"           : "com.squareup.retrofit2:retrofit:2.9.0",
+            "converter_gson"     : "com.squareup.retrofit2:converter-gson:2.9.0",
+            "adapter_rxjava2"    : "com.squareup.retrofit2:adapter-rxjava2:2.9.0",
+
+            "okhttp"             : "com.squareup.okhttp3:okhttp:4.2.2",
+            "logging_interceptor": "com.squareup.okhttp3:logging-interceptor:4.2.2",
+            "okhttpprofiler"     : "com.itkacher.okhttpprofiler:okhttpprofiler:1.0.7",
+
+
     ]
-    dependencies_lifecycle = [
-            lifecycle_viewmodel_ktx       : "androidx.lifecycle:lifecycle-viewmodel-ktx:${version.lifecycle_version}",
-            lifecycle_livedata_ktx        : "androidx.lifecycle:lifecycle-livedata-ktx:${version.lifecycle_version}",
-            lifecycle_runtime_ktx         : "androidx.lifecycle:lifecycle-runtime-ktx:${version.lifecycle_version}",
-            lifecycle_viewmodel_savedstate: "androidx.lifecycle:lifecycle-viewmodel-savedstate:${version.lifecycle_version}",
-            lifecycle_viewmodel_compose   : "androidx.lifecycle:lifecycle-viewmodel-compose:${version.lifecycle_version}",
-            lifecycle_common_java8        : "androidx.lifecycle:lifecycle-common-java8:${version.lifecycle_version}",
+    /*about--rxjava*/
+    dependencies_rxjava = [
+            //====================================rxjava
+            "rxjava2"                           : "io.reactivex.rxjava2:rxjava:2.2.21",
+            "rxandroid2"                        : "io.reactivex.rxjava2:rxandroid:2.1.1",
+            //====================================autodispose
+            "autodispose"                       : "com.uber.autodispose:autodispose:1.4.0",
+            "autodispose_android_archcomponents": "com.uber.autodispose:autodispose-android-archcomponents:1.4.0",
     ]
 
 
